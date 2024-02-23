@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  minio:
+    container_name: minio_server
+    image: cdaprod/minio-server:latest
+    build:
+      context: ./minio
+    volumes:
+      - ./minio/data:/data
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+    command: server /data --console-address ":9001"
+
+  weaviate:
+    container_name: weaviate_server
+    image: cdaprod/weaviate-server:latest
+    build:
+      context: ./weaviate
+    ports:
+      - "8080:8080"
+    environment:
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      ENABLE_MODULES: 'backup-s3'
+      BACKUP_S3_BUCKET: 'weaviate-backups'
+      BACKUP_S3_ENDPOINT: 'http://minio:9000'
+      BACKUP_S3_ACCESS_KEY_ID: 'minio'
+      BACKUP_S3_SECRET_ACCESS_KEY: 'minio123'
+      BACKUP_S3_USE_SSL: 'false'
+    volumes:
+      - ./weaviate/data:/var/lib/weaviate
+    depends_on:
+      - minio
+
+  langchain-app:
+    container_name: langchain_app
+    image: cdaprod/langchain-app:latest
+    build:
+      context: ./app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - weaviate
+      - minio
+
+volumes:
+  minio-data:
+  weaviate-data:

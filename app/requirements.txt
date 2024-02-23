@@ -1,0 +1,15 @@
+### Python-Web-Server ###
+pydantic
+fastapi
+uvicorn
+langchain[all]
+langserve[all]
+langsmith
+langchain-openai
+
+### Integrated-Services ###
+minio
+weaviate-client
+
+### Web search API ###
+tavily-python

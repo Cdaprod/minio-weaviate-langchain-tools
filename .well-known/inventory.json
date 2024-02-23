@@ -1,0 +1,56 @@
+{
+  "applications": [
+    {
+      "id": "app01",
+      "name": "My Web App",
+      "type": "Web Application",
+      "status": "Running",
+      "dependencies": ["db01", "service01"],
+      "github": {
+        "repo_name": "myusername/my-web-app",
+        "repo_url": "https://github.com/myusername/my-web-app",
+        "latest_commit": "c30f0c9d41d17ebe5b5a537922c3775b5c3b6eca",
+        "branch": "main",
+        "last_updated": "2024-02-02"
+      },
+      "metadata": {
+        "version": "2.1.3",
+        "deployment": "Kubernetes",
+        "last_deployed": "2024-02-01"
+      }
+    }
+  ],
+  "services": [
+    {
+      "id": "service01",
+      "name": "Authentication Service",
+      "type": "Internal API",
+      "status": "Running",
+      "github": {
+        "repo_name": "myusername/auth-service",
+        "repo_url": "https://github.com/myusername/auth-service",
+        "latest_commit": "a20f0e2g41d17ebe5b5a537922c3775b5c3b6bdc",
+        "branch": "develop",
+        "last_updated": "2024-01-30"
+      },
+      "metadata": {
+        "version": "1.0.0",
+        "deployment": "Docker Swarm",
+        "last_deployed": "2024-01-28"
+      }
+    }
+  ],
+  "resources": [
+    {
+      "id": "db01",
+      "name": "Primary Database",
+      "type": "PostgreSQL",
+      "status": "Running",
+      "metadata": {
+        "version": "13.2",
+        "hosted_on": "Server01",
+        "last_backup": "2024-02-01"
+      }
+    }
+  ]
+}

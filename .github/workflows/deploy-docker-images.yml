@@ -1,0 +1,31 @@
+name: Deploy Docker Images
+
+on:
+  workflow_dispatch:
+    branches:
+      - python
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, linux, arm64]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      - name: Pull Docker Images
+        run: |
+          docker pull cdaprod/weaviate-server:latest
+          docker pull cdaprod/minio-server:latest
+          docker pull cdaprod/langchain-app:latest
+
+      - name: Start Docker Compose
+        run: docker-compose up -d
+
+      - name: Cleanup
+        run: docker system prune -af
